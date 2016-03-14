@@ -2,7 +2,6 @@
 
 var app = {};
 app.server = 'https://api.parse.com/1/classes/messages';
-
 app.init = function() {
 };
 
@@ -28,7 +27,7 @@ app.fetch = function() {
     type: 'GET',
     success: function(data) {
       console.log('success');
-      console.log(data);
+      console.log(data); 
     },
     error: function(error) {
       console.error(error);
@@ -37,8 +36,3 @@ app.fetch = function() {
   console.log('hello');
 };
 
-
-var successFunction = function() {
-  //append to html
-
-};
