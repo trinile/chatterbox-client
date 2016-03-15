@@ -12,10 +12,9 @@ app.send = function(message) {
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
-      console.log('chatterbox: Message sent');
+      console.log('chatterbox: Message sent:', data);
     },
     error: function (data) {
-      // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to send message', data);
     }
   });
@@ -40,10 +39,9 @@ app.addMessages = function(message) {
 
 };
 
-
 app.escapeHTML = function(text) {
   if (text === undefined) {
-    return 'no message~~~~';
+    return 'user';
   }
   return text.replace(/[-[\]{}*+\\^$|#\s<>"]/g, '\\$&');
 };
@@ -55,7 +53,7 @@ var appendChatBox = function(data) {
     var text = message.text;
     var html = '<div class="chat"><span class="username">' + app.escapeHTML(user) + ':' + '</span>'
             + '<div class="text">Message: ' + app.escapeHTML(text) + 
-            '</div>' + key + '</div>';
+            '</div>';
     $('#chats').append(html).fadeIn();
   });
 
@@ -65,19 +63,18 @@ var appendChatBox = function(data) {
   }, 5000);
 };
 
-app.addRoom;
-
 app.fetch();
-//Escaping &, <, >, ", ', `, , !, @, $, %, (, ), =, +, {, }, [, and ] is almost enough
 
 
-//remember username
-//write new messages
 $(document).ready(function() {
-  $('.form').submit(function(e) {
-    var message = $('input:first').val();
+
+  $('#submit').on('click', function(event){
+    var message = $('#input-value').val();
+    event.preventDefault();
+    app.send(message);
     console.log(message);
-  }); 
+  });
+
 });
 
 
