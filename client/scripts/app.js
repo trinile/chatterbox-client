@@ -32,24 +32,16 @@ app.fetch = function() {
   });
 };
 
-app.fetch();
+app.clearMessages = function() {
+  $('#chats').html('');
+};
 
-//createdAt:
-//objectId:
-//roomname:
-//username
-//text
+app.addMessages = function(message) {
 
-// var chatBox = function(data) {
-//   //html for messages
-//   var html = '<div><span>' + data.username + '</span>'
-//             + '<span>' + data.text + 
-//             '</span></div>';
+};
 
-//   return html;
-// }
 
-var escapeHTML = function(text) {
+app.escapeHTML = function(text) {
   if (text === undefined) {
     return 'no message~~~~';
   }
@@ -58,29 +50,35 @@ var escapeHTML = function(text) {
 
 var appendChatBox = function(data) {
   var arr = data.results;
-  _.each(arr, function(message) {
+  _.each(arr, function(message, key) {
     var user = message.username;
     var text = message.text;
-    // escapeHTML(user);
-    // escapeHTML(text);
-    var html = '<div class="chat"><span class="username">' + escapeHTML(user) + '</span>'
-            + '<span class="text">' + escapeHTML(text) + 
-            '</span></div>';
-    
-    console.log('user: ' + escapeHTML(user), 'text: ', escapeHTML(text));
-
-    $('#chats').prepend(html);
+    var html = '<div class="chat"><span class="username">' + app.escapeHTML(user) + ':' + '</span>'
+            + '<div class="text">Message: ' + app.escapeHTML(text) + 
+            '</div>' + key + '</div>';
+    $('#chats').append(html).fadeIn();
   });
 
   setTimeout(function() {
+    app.clearMessages();
     app.fetch();
-  },5000);
+  }, 5000);
 };
 
+app.addRoom;
 
+app.fetch();
 //Escaping &, <, >, ", ', `, , !, @, $, %, (, ), =, +, {, }, [, and ] is almost enough
 
 
+//remember username
+//write new messages
+$(document).ready(function() {
+  $('.form').submit(function(e) {
+    var message = $('input:first').val();
+    console.log(message);
+  }); 
+});
 
 
 
