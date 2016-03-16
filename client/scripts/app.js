@@ -44,20 +44,16 @@ app.clearMessages = function() {
   $('#chats').html('');
 };
 
-// app.escapeHTML = function(text) {
-//   if (text === undefined) {
-//     return 'No message here!';
-//   }
-//   return text.replace(/[-[\]{}*+\\^$|#\s<>"]/g, '\\$&');
-// };
-
 app.addMessage = function(message) {
   //message has username, roomname, text
   var user = message.username;
   var text = message.text;
   var roomname = message.roomname;
   var $user = $('<span class="lobby username"></span></div>');
-  var $message = $('<div class="text"></div>');
+
+  var $message = app.friends.indexOf(user) !== -1 ? 
+  $('<div class="text friend"></div>') : $('<div class="text"></div>');
+
   var $chatBox = $('<div class="chat"></div>');
   var html = $chatBox.append($user.text(message.username + ':').attr('data-roomname', roomname).attr('data-username', user).append($message.text('Message: ' + message.text)));
 
@@ -84,15 +80,11 @@ app.addAllChats = function(data) {
   setTimeout(function() {
     app.clearMessages();
     app.fetch();
-  }, 5000);
+  }, 10000);
 };
-
-/////////////////////////////
-
 
 app.addRoom = function(room) {
   if (room === 'Add a New Room here!') {
-    console.log('prompt from addRoom called');
     var newRoom = prompt('What room do you want to add??');
     room = newRoom;
   }
@@ -102,7 +94,7 @@ app.addRoom = function(room) {
 };
 
 app.addFriend = function(event) { 
-  event.stopPropagation();
+  // event.stopPropagation();
   //addClass to $this
   $(this).find('.text').addClass('friend');
   var friend = $(this).attr('data-username');
@@ -128,11 +120,8 @@ app.handleSubmit = function(event) {
 $(document).ready(function() {
   app.init();
   $('#roomSelect').change(function(event) {
-    var room = $(this).find('option:selected').text();  
-    if (room === 'Add a New Room here!') {
-      app.addRoom(room);
-    } else {
-      app.room = room;
-    }
+    var room = $(this).find('option:selected').text(); 
+
+    room === 'Add a New Room here!' ? app.addRoom(room) : app.room = room;
   });
 });
