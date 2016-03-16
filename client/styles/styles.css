@@ -6,7 +6,7 @@ body {
 }
 
 #main, #chats {
-    width: 500px;
+    /*width: 500px;*/
     margin: auto;
     text-align: left;
     background: white;
@@ -59,6 +59,11 @@ form input[type=text] {
     padding: 5px;
 }
 
+#chats {
+    min-height: 500px;
+    max-height: 500px;
+    overflow: scroll;
+}
 .chat {
     padding: 5px;
     margin-bottom: 5px;
@@ -73,7 +78,7 @@ form input[type=text] {
 }
 
 .text {
-    width: 400px;
+    /*width: 400px;*/
     word-wrap: break-word;
     display: inline-block;
     font-weight: 400;
@@ -97,3 +102,27 @@ form input[type=text] {
     color: red;
 }
 
+.border {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#chats {
+    background-color: #8A7E9C;
+    border-radius: 4px;
+}
+.border:even {
+    background-color: blue;
+}
+
+.user-input {
+    background-color: white;
+    border: 1px solid #8A7E9C;
+    border-radius: 4px;
+}
+
+h1 {
+    background-color: ;
+}

@@ -54,7 +54,7 @@ app.addMessage = function(message) {
   var $message = app.friends.indexOf(user) !== -1 ? 
   $('<div class="text friend"></div>') : $('<div class="text"></div>');
 
-  var $chatBox = $('<div class="chat"></div>');
+  var $chatBox = $('<div class="chat border"></div>');
   var html = $chatBox.append($user.text(message.username + ':').attr('data-roomname', roomname).attr('data-username', user).append($message.text('Message: ' + message.text)));
 
   $('#chats').append(html).fadeIn();
