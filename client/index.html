@@ -19,8 +19,6 @@
       <select id="roomSelect">
         <option class="newRoom" val="">New room...</option>
         <option selected>lobby</option>
-        <option>kitchen</option>
-        <option>basement</option>
       </select>
       <div id="form"> 
         <form action="#">
@@ -33,9 +31,10 @@
     <div id="chats"></div>
     <!-- append chatbox -->
     <script>
-      // $.on('ready', function() {
-      //   app.init();
-      // });
+      $(document).ready(function() {
+          app.init();
+      });
     </script>
+    
   </body>
 </html>

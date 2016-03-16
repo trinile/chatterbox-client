@@ -3,8 +3,43 @@
 var app = {};
 app.server = 'https://api.parse.com/1/classes/messages';
 app.init = function() {
+  app.friends = [];
   app.room = 'lobby';
+  app.rooms = ['lobby'];
   app.fetch();
+
+
+  //selecting a room
+
+// $(document).ready(function() {
+  $('#roomSelect').on('change', function(event) {
+  // event.preventDefaut();
+  // event.stopPropagation();
+    console.log('hello');
+    var room = $(this).find('option:selected').text();  
+    if (room === 'New room...') {
+      // console.log('new room');
+      app.addRoom(room);
+    } else {
+      app.room = room;
+    }
+  });
+
+    // function() {
+    // console.log('hello');
+    // var room = $(this).find('option:selected').text();  
+    // if (room === 'New room') {
+    //   app.addRoom(room);
+    // } else {
+    //   app.room = room;
+    // }
+  // });
+
+// });
+  // Event listeners
+  $('#submit').on('click', app.handleSubmit);
+  $('#chats').on('click', '.username', app.addFriend);
+
 };
 
 app.send = function(message) {
@@ -37,30 +72,31 @@ app.clearMessages = function() {
   $('#chats').html('');
 };
 
-
-app.escapeHTML = function(text) {
-  if (text === undefined) {
-    return 'user';
-  }
-  return text.replace(/[-[\]{}*+\\^$|#\s<>"]/g, '\\$&');
-};
-
-///////////////////
+// app.escapeHTML = function(text) {
+//   if (text === undefined) {
+//     return 'No message here!';
+//   }
+//   return text.replace(/[-[\]{}*+\\^$|#\s<>"]/g, '\\$&');
+// };
 
 app.addMessage = function(message) {
   //message has username, roomname, text
   var user = message.username;
   var text = message.text;
   var roomname = message.roomname;
-  var html = '<div class="chat"><span class="' + roomname + ' lobby"</span>' + app.escapeHTML(user) + ':' + '</span>'
-          + '<div class="text">Message: ' + app.escapeHTML(text) + 
-          '</div>';
+  var $user = $('<span class="lobby username"></span></div>');
+  var $message = $('<div class="text"></div>');
+  var $chatBox = $('<div class="chat"></div>');
+  var html = $chatBox.append($user.text(message.username + ':').attr('data-roomname', roomname).attr('data-username', user).append($message.text('Message: ' + message.text)));
+
   $('#chats').append(html).fadeIn();
-  //add rooms to the DOM for rooms that exist
-  // if (roomname) {
-  //   app.addRoom(roomname);
-  // }
+
+  //if option for room does not exist, call addRoom;
+  if (app.rooms.indexOf(roomname) === -1) {
+    app.addRoom(roomname);
+  }
 };
+
 
 app.addAllChats = function(data) {
   var currentRoom = app.room;
@@ -88,33 +124,42 @@ app.addRoom = function(room) {
     room = newRoom;
   }
   $('#roomSelect').append('<option>' + room + '</option>');
+
+  app.rooms.push(room);
 };
 
-app.init();
+app.addFriend = function(event) { 
+  event.stopPropagation();
+  //addClass to $this
+  $(this).find('.text').addClass('friend');
+  var friend = $(this).attr('data-username');
 
-$(document).ready(function() {
-  $('#submit').on('click', function(event) {
-    var message = { };
-    message.username = window.location.search.replace('?username=', '');
-    message.text = $('#input-value').val();
-    message.roomname = app.room;
-    // message.roomname = 
-    event.preventDefault();
-    app.send(message);
-    console.log(message);
-  });
+  if (app.friends.indexOf(friend) === -1) {
+    app.friends.push(friend);
+  }
+};
 
 
-  //selecting a room
-  $('#roomSelect').change(function() {
-    var room = $(this).find('option:selected').text();  
-    if (room === 'New room') {
-      app.addRoom(room);
-    } else {
-      app.room = room;
-    }
-  });
-});
+app.handleSubmit = function(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  var message = { };
+  message.username = window.location.search.replace('?username=', '');
+  message.text = $('#input-value').val();
+  message.roomname = app.room;
 
-// app.addRoom('lobby');
+  app.send(message);
+};
 
+
+// app.selectRoom = function(event) {
+//   // event.preventDefaut();
+//   event.stopPropagation();
+//   console.log('hello');
+//   var room = $(this).find('option:selected').text();  
+//   if (room === 'New room') {
+//     app.addRoom(room);
+//   } else {
+//     app.room = room;
+//   }
+// };
