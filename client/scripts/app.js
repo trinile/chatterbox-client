@@ -1,41 +1,13 @@
 // YOUR CODE HERE:
-
 var app = {};
-app.server = 'https://api.parse.com/1/classes/messages';
+
 app.init = function() {
+  app.server = 'https://api.parse.com/1/classes/messages';
   app.friends = [];
   app.room = 'lobby';
   app.rooms = ['lobby'];
   app.fetch();
 
-
-  //selecting a room
-
-// $(document).ready(function() {
-  $('#roomSelect').on('change', function(event) {
-  // event.preventDefaut();
-  // event.stopPropagation();
-    console.log('hello');
-    var room = $(this).find('option:selected').text();  
-    if (room === 'New room...') {
-      // console.log('new room');
-      app.addRoom(room);
-    } else {
-      app.room = room;
-    }
-  });
-
-    // function() {
-    // console.log('hello');
-    // var room = $(this).find('option:selected').text();  
-    // if (room === 'New room') {
-    //   app.addRoom(room);
-    // } else {
-    //   app.room = room;
-    // }
-  // });
-
-// });
   // Event listeners
   $('#submit').on('click', app.handleSubmit);
   $('#chats').on('click', '.username', app.addFriend);
@@ -119,11 +91,12 @@ app.addAllChats = function(data) {
 
 
 app.addRoom = function(room) {
-  if (room === 'New room...') {
+  if (room === 'Add a New Room here!') {
+    console.log('prompt from addRoom called');
     var newRoom = prompt('What room do you want to add??');
     room = newRoom;
   }
-  $('#roomSelect').append('<option>' + room + '</option>');
+  $('#roomSelect').append('<option>' + room + '</option>'); 
 
   app.rooms.push(room);
 };
@@ -152,14 +125,14 @@ app.handleSubmit = function(event) {
 };
 
 
-// app.selectRoom = function(event) {
-//   // event.preventDefaut();
-//   event.stopPropagation();
-//   console.log('hello');
-//   var room = $(this).find('option:selected').text();  
-//   if (room === 'New room') {
-//     app.addRoom(room);
-//   } else {
-//     app.room = room;
-//   }
-// };
+$(document).ready(function() {
+  app.init();
+  $('#roomSelect').change(function(event) {
+    var room = $(this).find('option:selected').text();  
+    if (room === 'Add a New Room here!') {
+      app.addRoom(room);
+    } else {
+      app.room = room;
+    }
+  });
+});
